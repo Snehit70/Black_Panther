@@ -1,21 +1,14 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 from services.user_service import UserService
 from models.user import User
 from app import db
 import secrets
+from utils.password_utils import PasswordUtils
 
 class AuthService:
-    @staticmethod
-    def hash_password(password):
-        return generate_password_hash(password, method='pbkdf2:sha256')
-    
-    @staticmethod
-    def verify_password(stored_password,provided_password):
-        return check_password_hash(stored_password, provided_password)
-    
+   
     @staticmethod
     def register_user(username,name,email,password,bio=None):
-        hashed_password=AuthService.hash_password(password)
+        hashed_password=PasswordUtils.hash_password(password)
 
         return UserService.create_user(
             username=username,
@@ -34,7 +27,7 @@ class AuthService:
         if not user:
             return None
         
-        if AuthService.verify_password(user.password,password):
+        if PasswordUtils.verify_password(user.password,password):
             return user
         
         return None

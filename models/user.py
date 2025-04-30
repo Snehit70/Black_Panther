@@ -1,5 +1,6 @@
-from datetime import datetime
-from app import db
+from datetime import datetime,timezone
+from extensions import db
+from models.interest import interest
 
 class User(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -8,5 +9,10 @@ class User(db.Model):
     email=db.Column(db.String(120),unique=True, nullable= False)
     password=db.Column(db.String(120), nullable=False)
     bio= db.Column(db.Text, nullable=True)
-    created_at=db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at=db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at=db.Column(db.DateTime, default=lambda:datetime.now(timezone.utc))
+    updated_at=db.Column(db.DateTime,default=lambda:datetime.now(timezone.utc), onupdate=lambda:datetime.now(timezone.utc))
+
+    interested_projects = db.relationship('Project',
+                                        secondary=interest,
+                                        backref=db.backref('interested_users', lazy='dynamic'))
+    

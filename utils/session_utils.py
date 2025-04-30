@@ -24,9 +24,9 @@ class SessionManager:
     @staticmethod
     def login_required(f):
         @wraps(f)
-        def decoratod_function(*args, **kwargs):
+        def decorated_function(*args, **kwargs):
             if not SessionManager.is_logged_in():
                 flash('Please log in to access this page','error')
                 return redirect(url_for('auth.login'))
             return f(*args, **kwargs)
-        return decoratod_function
+        return decorated_function

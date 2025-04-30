@@ -30,3 +30,19 @@ class ProjectService:
     def get_user_projects(user_id):
         return Project.query.filter_by(creator_id=user_id).order_by(Project.created_at.desc()).all()
     
+    @staticmethod
+    def get_featured_projects(limit=6):
+        return Project.query.order_by(Project.created_at.desc()).limit(limit).all()
+ 
+    @staticmethod
+    def search_projects(query):
+        search_term= f"%{query}%"
+        return Project.query.filter(
+            db.or_(
+                Project.title.ilike(search_term),
+                Project.description.ilike(search_term),
+                Project.technologies.ilike(search_term)
+            )
+        ).order_by(Project.created_at.desc()).all()
+    
+    

@@ -1,7 +1,7 @@
 from models.user import User
 from app import  db
 from sqlalchemy.exc import IntegrityError
-from services.auth_service import AuthService
+from utils.password_utils import PasswordUtils
 
 class UserService:
     @staticmethod
@@ -77,10 +77,10 @@ class UserService:
             if not user:
                 return False
             
-            if not AuthService.verify_password(user.password, current_password):
+            if not PasswordUtils.verify_password(user.password, current_password):
                 return False
             
-            hashed_password =AuthService.hash_password(new_password)
+            hashed_password =PasswordUtils.hash_password(new_password)
             user.password =hashed_password
 
             db.session.commit()

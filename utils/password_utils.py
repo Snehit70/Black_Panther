@@ -1,6 +1,7 @@
 import secrets
 import string
 import zxcvbn
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class PasswordUtils:
     @staticmethod
@@ -39,3 +40,11 @@ class PasswordUtils:
     @staticmethod
     def generate_reset_token(length=32):
         return secrets.token_urlsafe(length)
+    
+    @staticmethod
+    def hash_password(password):
+        return generate_password_hash(password, method='pbkdf2:sha256')
+    
+    @staticmethod
+    def verify_password(stored_password,provided_password):
+        return check_password_hash(stored_password, provided_password)

@@ -59,10 +59,10 @@ def login():
     if request.method == 'POST':
         username_or_email = request.form.get('username')
         password =request.form.get('password')
-        user=AuthService.login(username_or_email,password)
 
         if not username_or_email or not password:
             flash('Username/Email and password are required','error')
+            return render_template('login.html')
 
         
         try:
@@ -70,7 +70,7 @@ def login():
 
             if user:
                 SessionManager.login_user(user)
-                flash('Login successful!','sucess')
+                flash('Login successful!','success')
                 return redirect(url_for('index'))
             else:
                 flash('Invalid credentials','error')
