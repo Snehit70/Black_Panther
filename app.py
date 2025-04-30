@@ -1,8 +1,26 @@
 from flask import Flask, render_template,url_for,request,redirect,flash,session,request
 import os
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from routes.auth import auth_bp
+from routes.profile import profile_bp
+from routes.project import project_bp
 
 
-app=Flask(__name__)
+app=Flask(__name__,instance_relative_config=True)
+app.config.from_object(Config)
+app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(profile_bp, url_prefix='/profile')
+app.register_blueprint(project_bp, url_prefix='/projects')
+
+os.makedirs(app.instance_path, exist_ok=True)
+
+db=SQLAlchemy(app)
+
+from models.user import User
+
+with app.app_context():
+	db.create_all()
 
 @app.route('/')
 def home():
@@ -12,33 +30,6 @@ def home():
 @app.route('/index')
 def index():
 	return render_template('index.html')
-
-@app.route('/login',methods=['GET','POST'])
-def login():
-	if request.method=="POST":
-		print(f"username:{request.form['username']}\n password:{request.form['password']}")
-	return render_template('login.html')
-
-@app.route('/profile')
-def profile():
-	return render_template('profile.html')
-
-@app.route('/register')
-def register():
-	return render_template('register.html')
-
-@app.route('/project')
-def project():
-	return render_template('project.html')
-
-@app.route('/create_project')
-def create_project():
-	return render_template('create_project.html')
-
-
-
-
-
 
 if __name__ == '__main__':
 	app.run(debug=True)
