@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Collab-Sphere</title>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div>Collab-Sphere</div>
+        <div class="nav-links">
+            <a href="/index">Home</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>  
+        </div>
+    </nav>
+
+    <!-- Registration Form -->
+    <div class="form-container">
+        <h2>Create an Account</h2>
+        <form action="/register" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+        
+            <input type="email" name="email" placeholder="Email" required>
+        
+            <input type="password" name="password" placeholder="Password" 
+                required>
+        
+            <textarea name="bio" placeholder="About You (Bio)" rows="4" required></textarea>
+        
+            <button type="submit" class="btn-register">Register</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 Collab-Sphere - Connect. Collaborate. Create.
+    </footer>
+
+</body>
+</html>
