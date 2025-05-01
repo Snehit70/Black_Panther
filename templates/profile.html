@@ -75,9 +75,9 @@
                                 <a href="{{ url_for('project.create_project') }}" class="btn btn-dark btn-sm">Create Project</a>
                             </div>
                             {% endif %}
-                            {% if user.projects %}
+                            {% if user.created_projects %}
                                 <div class="list-group">
-                                {% for project in user.projects %}
+                                {% for project in user.created_projects %}
                                     <a href="{{ url_for('project.view_project', project_id=project.id) }}" 
                                        class="list-group-item list-group-item-action">
                                         <div class="d-flex w-100 justify-content-between">
