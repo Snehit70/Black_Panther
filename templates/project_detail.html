@@ -2,7 +2,7 @@
 {% block title %}{{ project.title|title_case }}{% endblock %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container-fluid my-5">
     <div class="row">
         <!-- Project Details -->
         <div class="col-lg-8">
@@ -11,7 +11,8 @@
                     <h1 class="card-title h2 mb-3 fw-bold">{{ project.title|title_case }}</h1>
                     <div class="mb-3">
                         {% for tech in project.technologies.split(',') %}
-                            <span class="badge bg-primary-soft text-primary me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() }}</span>
+                        <span class="badge bg-info text-light me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() |title_case }}</span>
+                            
                         {% endfor %}
                     </div>
                     
@@ -60,7 +61,7 @@
                                 <div class="comment mb-3">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                            <div class="avatar small text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
                                                 {{ comment.user.username[0].upper() }}
                                             </div>
                                             <div>
@@ -105,13 +106,13 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="avatar bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <div class="avatar medium text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
                             {{ project.creator.username[0].upper() }}
                         </div>
                         <h6 class="mb-0">{{ project.creator.username }}</h6>
                     </div>
                     <p class="text-muted">{{ project.creator.bio[:100] + '...' if project.creator.bio else 'No bio available' }}</p>
-                    <a href="#" class="btn btn-outline-dark rounded-pill px-4 w-100">View Profile</a>
+                    <a href="{{url_for('profile.view_profile')}}" class="btn btn-outline-dark rounded-pill px-4 w-100">View Profile</a>
                 </div>
             </div>
 
@@ -141,27 +142,17 @@
 
 {% block styles %}
 <style>
-    .comment {
-        padding: 1.25rem;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        border-left: 3px solid #03045e;
+    /* Project detail-specific styles - most have been moved to style.css */
+    
+    /* Custom sizing for avatars in this view */
+    .avatar.small {
+        width: 32px; 
+        height: 32px;
     }
     
-    .bg-primary-soft {
-        background-color: rgba(3, 4, 94, 0.1);
-    }
-    
-    .text-primary {
-        color: #03045e !important;
-    }
-    
-    .avatar {
-        background-color: #03045e;
-    }
-    
-    .rounded-pill {
-        border-radius: 50rem !important;
+    .avatar.medium {
+        width: 48px; 
+        height: 48px;
     }
 </style>
 {% endblock %}

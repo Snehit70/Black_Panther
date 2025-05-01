@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container-fluid my-5">
     <!-- Page Header with Title and Search -->
     <div class="page-header mb-5">
         <div class="row align-items-center">
@@ -51,17 +51,14 @@
                             <h3 class="h5 card-title mb-3">{{ project.title|title_case }}</h3>
                             <div class="mb-3">
                                 {% for tech in project.technologies.split(',') %}
-                                    <span class="badge bg-primary-soft text-primary me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() }}</span>
+                                <span class="badge bg-info text-light me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() | title_case }}</span>
                                 {% endfor %}
                             </div>
                             <p class="card-text text-muted">{{ project.description[:150] }}{% if project.description|length > 150 %}...{% endif %}</p>
                         </div>
                         <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center p-4">
                             <div class="d-flex align-items-center">
-                                <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                    {{ project.creator.username[0].upper() }}
-                                </div>
-                                <span class="small text-muted">{{ project.creator.username }}</span>
+                                <span class="small text-muted">Created by {{ project.creator.username }}</span>
                             </div>
                             <a href="{{ url_for('project.view_project', project_id=project.id) }}" 
                                class="btn btn-sm btn-outline-dark rounded-pill px-3">Learn More</a>
@@ -111,84 +108,23 @@
         </nav>
     </div>
     {% endif %}
-    
-    <!-- Categories Section (optional enhancement) -->
-    <div class="categories-section mt-5 pt-4 border-top">
-        <h3 class="h4 mb-4">Browse by Technology</h3>
-        <div class="d-flex flex-wrap gap-2">
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Python</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">JavaScript</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">React</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Node.js</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Flask</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Django</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Machine Learning</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Data Science</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Web Development</a>
-            <a href="#" class="btn btn-outline-dark rounded-pill mb-2">Mobile Apps</a>
-        </div>
-    </div>
 </div>
 {% endblock %}
 
 {% block styles %}
 <style>
-    .hover-lift {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Most styles have been moved to style.css */
+    /* Only keeping page-specific styles */
+    
+    /* Specific search container styles for this page */
+    .search-container {
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     
-    .hover-lift:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    }
-    
-    .bg-primary-soft {
-        background-color: rgba(3, 4, 94, 0.1);
-    }
-    
-    .text-primary {
-        color: #03045e !important;
-    }
-    
-    .border-primary {
-        border-color: #03045e !important;
-    }
-    
-    .rounded-pill {
-        border-radius: 50rem !important;
-    }
-    
-    .rounded-4 {
-        border-radius: 0.75rem !important;
-    }
-    
-    .card {
-        border-radius: 15px !important;
-        overflow: hidden;
-    }
-    
-    .empty-state {
-        padding: 3rem;
-    }
-    
-    /* Pagination styling */
-    .page-item.active .page-link {
-        background-color: #03045e;
-        border-color: #03045e;
-    }
-    
-    .page-link {
-        color: #03045e;
-    }
-    
-    .page-link:focus {
-        box-shadow: 0 0 0 0.25rem rgba(3, 4, 94, 0.25);
-    }
-    
-    /* Category buttons hover effect */
-    .btn-outline-dark:hover {
-        background-color: #03045e;
-        border-color: #03045e;
+    /* Custom empty state for search results */
+    .empty-state.bg-light {
+        background-color: #f8f9fa;
     }
 </style>
 {% endblock %}
