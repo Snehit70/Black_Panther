@@ -1,5 +1,5 @@
 from models.user import User
-from app import  db
+from extensions import db
 from sqlalchemy.exc import IntegrityError
 from utils.password_utils import PasswordUtils
 

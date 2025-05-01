@@ -87,3 +87,22 @@ def search():
     return render_template('project.html',
                            projects=projects,
                            search_query=query)
+
+@project_bp.route('/<int:project_id>/delete', methods=['POST'])
+@SessionManager.login_required
+def delete_project(project_id):
+    user_id = SessionManager.get_current_user_id()
+    
+    try:
+        result = ProjectService.delete_project(project_id, user_id)
+        
+        if result:
+            flash('Project deleted successfully', 'success')
+            return redirect(url_for('project.list_projects'))
+        else:
+            flash('Failed to delete project. You may not have permission.', 'error')
+            return redirect(url_for('project.view_project', project_id=project_id))
+            
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}', 'error')
+        return redirect(url_for('project.view_project', project_id=project_id))

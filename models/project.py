@@ -8,7 +8,9 @@ class Project(db.Model):
     description =db.Column(db.Text)
 
     creator_id =db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-    creator =db.relationship('User',backref='projects')
+    # This defines a one-to-many relationship from User to Project
+    # The 'projects' backref is used to access a user's created projects
+    creator = db.relationship('User', foreign_keys=[creator_id], backref='created_projects')
 
     created_at =db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 

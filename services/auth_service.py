@@ -1,6 +1,6 @@
 from services.user_service import UserService
 from models.user import User
-from app import db
+from extensions import db
 import secrets
 from utils.password_utils import PasswordUtils
 

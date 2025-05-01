@@ -1,48 +1,98 @@
 from models.project import Project
-from app import db
+from extensions import db
+from typing import List, Optional
 
 class ProjectService:
     @staticmethod
-    def create_project(title, technologies, description,creator_id):
+    def create_project(title, technologies, description, creator_id) -> Optional[Project]:
         try:
+            # Basic input validation
+            if not title or not creator_id:
+                return None
+                
             project = Project(
                 title=title,
                 technologies=technologies,
-                description =description,
-                creator_id = creator_id
+                description=description,
+                creator_id=creator_id
             )
             db.session.add(project)
             db.session.commit()
             return project
-        except Exception as e:
+        except Exception:
             db.session.rollback()
-            raise e
+            return None
         
     @staticmethod
-    def get_project_by_id(project_id):
+    def get_project_by_id(project_id) -> Optional[Project]:
+        if not project_id:
+            return None
         return Project.query.get(project_id)
 
     @staticmethod
-    def get_all_projects():
+    def get_all_projects() -> List[Project]:
         return Project.query.order_by(Project.created_at.desc()).all()
     
     @staticmethod
-    def get_user_projects(user_id):
+    def get_user_projects(user_id) -> List[Project]:
+        if not user_id:
+            return []
         return Project.query.filter_by(creator_id=user_id).order_by(Project.created_at.desc()).all()
     
     @staticmethod
-    def get_featured_projects(limit=6):
-        return Project.query.order_by(Project.created_at.desc()).limit(limit).all()
+    def get_featured_projects(limit=6) -> List[Project]:
+        try:
+            return Project.query.order_by(Project.created_at.desc()).limit(limit).all()
+        except Exception:
+            return []
  
     @staticmethod
-    def search_projects(query):
-        search_term= f"%{query}%"
-        return Project.query.filter(
-            db.or_(
-                Project.title.ilike(search_term),
-                Project.description.ilike(search_term),
-                Project.technologies.ilike(search_term)
-            )
-        ).order_by(Project.created_at.desc()).all()
+    def search_projects(query) -> List[Project]:
+        if not query:
+            return []
+            
+        try:
+            search_term = f"%{query}%"
+            return Project.query.filter(
+                db.or_(
+                    Project.title.ilike(search_term),
+                    Project.description.ilike(search_term),
+                    Project.technologies.ilike(search_term)
+                )
+            ).order_by(Project.created_at.desc()).all()
+        except Exception:
+            return []
+    
+    @staticmethod
+    def delete_project(project_id, user_id) -> bool:
+        """
+        Deletes a project if the user is the creator of the project.
+        
+        Args:
+            project_id: The ID of the project to delete
+            user_id: The ID of the user attempting to delete the project
+            
+        Returns:
+            bool: True if the project was deleted, False otherwise
+        """
+        if not project_id or not user_id:
+            return False
+            
+        try:
+            project = Project.query.get(project_id)
+            
+            if not project:
+                return False
+                
+            # Check if the user is the creator of the project
+            if project.creator_id != user_id:
+                return False
+                
+            db.session.delete(project)
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
     
     
