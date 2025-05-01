@@ -6,11 +6,12 @@ A web application that helps students and developers showcase their projects and
 - **Madhura** - Team Leader
 - **Sejal**
 - **Atulya**
-- **Snehit**
 
 ## Project Overview
 
 Black Panther is a collaboration platform designed for students and developers to share projects, connect with like-minded individuals, and build a portfolio of their work. The platform allows users to express interest in projects they'd like to contribute to, fostering collaboration and knowledge sharing.
+
+[Project Demo Video](https://www.canva.com/design/DAGmOdtxOOQ/ukCKGqb_ZIBfFqcdx5b6hw/edit)
 
 ## Technology Stack
 
@@ -101,11 +102,6 @@ If you're experiencing issues with the requirements installation:
    pip install flask flask-sqlalchemy flask-bootstrap
    pip install flask-wtf email-validator flask-login flask-session
    ```
-
-4. For Windows users, you might need to install additional build tools for some packages:
-   - Install Visual C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-   - Or use: `pip install --only-binary :all: -r requirements.txt`
-
 5. Check Python version compatibility - this project works best with Python 3.8-3.10 due to the recent package versions used.
 
 6. If all else fails, try creating a new requirements file with relaxed versions:
