@@ -12,5 +12,7 @@ class Project(db.Model):
 
     created_at =db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
+    comments = db.relationship('Comment', backref='project', lazy='dynamic')
+
     def __repr__(self):
         return f'<Project {self.title}>'

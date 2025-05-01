@@ -1,0 +1,51 @@
+/* Base font for entire site */
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Navbar custom color */
+.bg-custom-blue {
+    background-color: #03045e !important;
+}
+
+/* Rounded corners for all cards */
+.card {
+    border-radius: 15px !important;
+    overflow: hidden; /* This ensures inner elements don't stick out */
+}
+
+.card-header {
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}
+
+/* Rounded corners for form elements */
+.form-control {
+    border-radius: 10px !important;
+}
+
+/* Rounded corners for buttons */
+.btn {
+    border-radius: 10px !important;
+}
+
+.card-body{
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}
+
+/* Comment styles */
+.comment {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.comment:hover {
+    background-color: #f0f1f2;
+}
+
+.comments-list hr {
+    margin: 1rem 0;
+    border-color: #dee2e6;
+} 

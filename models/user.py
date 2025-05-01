@@ -16,3 +16,5 @@ class User(db.Model):
                                         secondary=interest,
                                         backref=db.backref('interested_users', lazy='dynamic'))
     
+    comments = db.relationship('Comment', backref='user', lazy='dynamic')
+    
