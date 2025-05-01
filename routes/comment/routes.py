@@ -10,16 +10,13 @@ def add_comment(project_id):
     """Add a new comment to a project"""
     content = request.form.get('content')
     
-    # Validate content
     if not content or content.strip() == "":
         flash('Comment cannot be empty', 'error')
         return redirect(url_for('project.view_project', project_id=project_id))
 
     try:
-        # Get current user's ID from session
         user_id = SessionManager.get_current_user_id()
         
-        # Add the comment
         CommentService.add_comment(
             user_id=user_id,
             project_id=project_id,
@@ -40,7 +37,6 @@ def delete_comment(project_id, comment_id):
     try:
         user_id = SessionManager.get_current_user_id()
         
-        # Attempt to delete the comment
         if CommentService.delete_comment(comment_id, user_id):
             flash('Comment deleted successfully', 'success')
         else:
@@ -58,7 +54,6 @@ def edit_comment(project_id, comment_id):
     """Edit a comment"""
     content = request.form.get('content')
     
-    # Validate content
     if not content or content.strip() == "":
         flash('Comment cannot be empty', 'error')
         return redirect(url_for('project.view_project', project_id=project_id))
@@ -67,7 +62,6 @@ def edit_comment(project_id, comment_id):
         user_id = SessionManager.get_current_user_id()
         comment = CommentService.get_comment(comment_id)
         
-        # Check if comment exists and user has permission
         if not comment:
             flash('Comment not found', 'error')
         elif comment.user_id != user_id:

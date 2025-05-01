@@ -113,6 +113,20 @@ If you're experiencing issues with the requirements installation:
    pip install "flask>=2.0.0,<4.0.0" "flask-sqlalchemy>=2.5.0,<4.0.0" "flask-bootstrap>=3.3.7.0,<4.0.0" "flask-wtf>=1.0.0,<2.0.0" "email-validator>=1.0.0,<3.0.0"
    ```
 
+7. Using `uv` as an alternative to `pip`:
+   
+   If you're experiencing issues with `pip` (slow performance, dependency conflicts, or installation failures), you can try using `uv`, a faster alternative:
+
+   ```
+   # First, install uv
+   pip install uv
+   
+   # Then use uv to install requirements
+   uv pip install -r requirements.txt
+   ```
+
+   `uv` offers improved speed and dependency resolution compared to standard `pip`. It's fully compatible with our requirements.txt file but processes dependencies much faster, which can help resolve installation issues on some systems.
+
 ## Project Structure
 
 - **app.py**: Main application file with Flask setup and route registration

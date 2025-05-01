@@ -6,7 +6,6 @@ class ProjectService:
     @staticmethod
     def create_project(title, technologies, description, creator_id) -> Optional[Project]:
         try:
-            # Basic input validation
             if not title or not creator_id:
                 return None
                 
@@ -65,16 +64,6 @@ class ProjectService:
     
     @staticmethod
     def delete_project(project_id, user_id) -> bool:
-        """
-        Deletes a project if the user is the creator of the project.
-        
-        Args:
-            project_id: The ID of the project to delete
-            user_id: The ID of the user attempting to delete the project
-            
-        Returns:
-            bool: True if the project was deleted, False otherwise
-        """
         if not project_id or not user_id:
             return False
             
@@ -84,7 +73,6 @@ class ProjectService:
             if not project:
                 return False
                 
-            # Check if the user is the creator of the project
             if project.creator_id != user_id:
                 return False
                 

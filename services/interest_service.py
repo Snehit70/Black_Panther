@@ -13,7 +13,6 @@ class InterestService:
             if not user or not project:
                 return False
             
-            # Check if already interested to avoid duplicates
             if project in user.interested_projects:
                 return True
                 
