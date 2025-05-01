@@ -99,3 +99,11 @@ def change_password():
     
     
     return render_template('change_password.html')
+
+@profile_bp.route('/user/<int:user_id>')
+def view_user_profile(user_id):
+    user = UserService.get_user_by_id(user_id)
+    if not user:
+        flash('User not found', 'error')
+        return redirect(url_for('index'))
+    return render_template('profile.html', user=user)

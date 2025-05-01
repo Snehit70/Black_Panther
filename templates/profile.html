@@ -37,12 +37,14 @@
                     {% endif %}
 
                     <div class="d-grid gap-2">
+                        {% if session.user_id == user.id %}
                         <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-outline-dark">
                             Edit Profile
                         </a>
                         <a href="{{ url_for('profile.change_password') }}" class="btn btn-outline-dark">
                             Change Password
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -53,10 +55,14 @@
                 <div class="card-header bg-dark text-white">
                     <ul class="nav nav-tabs card-header-tabs" id="projectTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active text-secondary " id="my-projects-tab" data-toggle="tab" href="#my-projects" role="tab">My Projects</a>
+                            <a class="nav-link active text-secondary " id="my-projects-tab" data-toggle="tab" href="#my-projects" role="tab">
+                                {% if session.user_id == user.id %}My{% else %}{{ user.username }}'s{% endif %} Projects
+                            </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link text-secondary" id="interested-projects-tab" data-toggle="tab" href="#interested-projects" role="tab">Interested Projects</a>
+                            <a class="nav-link text-secondary" id="interested-projects-tab" data-toggle="tab" href="#interested-projects" role="tab">
+                                Interested Projects
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -64,9 +70,11 @@
                     <div class="tab-content" id="projectTabsContent">
                         <!-- My Projects Tab -->
                         <div class="tab-pane fade show active" id="my-projects" role="tabpanel">
+                            {% if session.user_id == user.id %}
                             <div class="d-flex justify-content-end mb-3">
                                 <a href="{{ url_for('project.create_project') }}" class="btn btn-dark btn-sm">Create Project</a>
                             </div>
+                            {% endif %}
                             {% if user.projects %}
                                 <div class="list-group">
                                 {% for project in user.projects %}
@@ -85,11 +93,15 @@
                                 </div>
                             {% else %}
                                 <p class="text-center text-muted my-4">
-                                    You haven't created any projects yet.
-                                    <br>
-                                    <a href="{{ url_for('project.create_project') }}" class="btn btn-dark mt-2">
-                                        Create Your First Project
-                                    </a>
+                                    {% if session.user_id == user.id %}
+                                        You haven't created any projects yet.
+                                        <br>
+                                        <a href="{{ url_for('project.create_project') }}" class="btn btn-dark mt-2">
+                                            Create Your First Project
+                                        </a>
+                                    {% else %}
+                                        {{ user.username }} hasn't created any projects yet.
+                                    {% endif %}
                                 </p>
                             {% endif %}
                         </div>
@@ -114,11 +126,15 @@
                                 </div>
                             {% else %}
                                 <p class="text-center text-muted my-4">
-                                    You haven't shown interest in any projects yet.
-                                    <br>
-                                    <a href="{{ url_for('project.list_projects') }}" class="btn btn-dark mt-2">
-                                        Browse Projects
-                                    </a>
+                                    {% if session.user_id == user.id %}
+                                        You haven't shown interest in any projects yet.
+                                        <br>
+                                        <a href="{{ url_for('project.list_projects') }}" class="btn btn-dark mt-2">
+                                            Browse Projects
+                                        </a>
+                                    {% else %}
+                                        {{ user.username }} hasn't shown interest in any projects yet.
+                                    {% endif %}
                                 </p>
                             {% endif %}
                         </div>

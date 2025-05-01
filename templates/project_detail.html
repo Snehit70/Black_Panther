@@ -113,7 +113,7 @@
                     </div>
                     <p class="text-muted">{{ project.creator.bio[:100] + '...' if project.creator.bio else 'No bio available' }}</p>
                     <div>
-                        <a href="{{url_for('profile.view_profile')}}" class="btn btn-outline-dark rounded-pill px-4 w-100 mb-2">View Profile</a>
+                        <a href="{{url_for('profile.view_user_profile', user_id=project.creator_id)}}" class="btn btn-outline-dark rounded-pill px-4 w-100 mb-2">View Profile</a>
                         
                         {% if session.user_id and session.user_id == project.creator_id %}
                             <form action="{{ url_for('project.delete_project', project_id=project.id) }}" method="POST">
