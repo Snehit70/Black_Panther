@@ -1,6 +1,23 @@
-/* Base font for entire site */
+/* Base font and background for entire site */
 body {
     font-family: 'Montserrat', sans-serif;
+    /* background-color: #f0f7ff; Light blue background */
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
+    background-attachment: fixed;
+    /* Other background options:
+       #f5f5f5 - Light gray
+       #eef2f7 - Soft blue-gray
+       #f0ffe6 - Light mint
+       #fff8f0 - Soft cream
+    */
+}
+
+/* This is for the main content area if you want it slightly different than the overall background */
+main {
+    background-color: #ffffff; /* White content area */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 /* Navbar custom color */
@@ -11,34 +28,113 @@ body {
 /* Rounded corners for all cards */
 .card {
     border-radius: 15px !important;
-    overflow: hidden; /* This ensures inner elements don't stick out */
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
     border-top-left-radius: 15px !important;
     border-top-right-radius: 15px !important;
+    border-bottom: none;
+    padding: 1rem 1.25rem;
+}
+
+.card-header.bg-dark {
+    background-color: #03045e !important; /* Match navbar color */
+    color: white;
+}
+
+.card-body {
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+    padding: 1.5rem;
 }
 
 /* Rounded corners for form elements */
 .form-control {
     border-radius: 10px !important;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #03045e;
+    box-shadow: 0 0 0 0.2rem rgba(3, 4, 94, 0.25);
+}
+
+/* Form Label Enhancement */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #495057;
 }
 
 /* Rounded corners for buttons */
 .btn {
     border-radius: 10px !important;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.card-body{
-    border-bottom-left-radius: 15px !important;
-    border-bottom-right-radius: 15px !important;
+.btn-dark {
+    background-color: #03045e !important;
+    border-color: #03045e !important;
+}
+
+.btn-dark:hover {
+    background-color: #02033d !important;
+    box-shadow: 0 4px 8px rgba(3, 4, 94, 0.3);
+}
+
+.btn-outline-dark {
+    color: #03045e !important;
+    border-color: #03045e !important;
+}
+
+.btn-outline-dark:hover {
+    background-color: #03045e !important;
+    color: white !important;
+}
+
+/* Badge Styling */
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* Form Group Spacing */
+.form-group, .mb-3 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Custom Form Feedback */
+.invalid-feedback {
+    font-size: 80%;
+    color: #dc3545;
+    margin-top: 0.25rem;
 }
 
 /* Comment styles */
 .comment {
-    padding: 15px;
+    padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 10px;
+    border-left: 3px solid #03045e;
+    transition: background-color 0.2s ease;
 }
 
 .comment:hover {
@@ -48,4 +144,17 @@ body {
 .comments-list hr {
     margin: 1rem 0;
     border-color: #dee2e6;
+}
+
+/* Container styling to contrast with background */
+.container-fluid, .container {
+    background-color: transparent; /* Let the body background show through */
+}
+
+/* Footer styling to match the new theme */
+footer.bg-dark {
+    background-color: #03045e !important; /* Match your navbar color */
+    margin-top: 3rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 } 

@@ -42,5 +42,37 @@ def index():
 	featured_projects = ProjectService.get_featured_projects()
 	return render_template('index.html', featured_projects=featured_projects)
 
+@app.template_filter('title_case')
+def title_case_filter(text):
+    if not text:
+        return ""
+    
+    # Words that shouldn't be capitalized in titles (unless first/last)
+    minor_words = {'a', 'an', 'the', 'and', 'but', 'or', 'for', 'nor', 'on', 'at', 
+                   'to', 'from', 'by', 'of', 'in', 'with'}
+    
+    words = text.split()
+    result = []
+    
+    for i, word in enumerate(words):
+        # Always capitalize first and last word
+        if i == 0 or i == len(words) - 1:
+            result.append(word.capitalize())
+        # Don't capitalize minor words
+        elif word.lower() in minor_words:
+            result.append(word.lower())
+        # Capitalize all other words
+        else:
+            result.append(word.capitalize())
+    
+    return ' '.join(result)
+
+@app.template_filter('tech_list')
+def tech_list_filter(tech_string):
+    """Convert comma-separated technologies to list"""
+    if not tech_string:
+        return []
+    return [tech.strip() for tech in tech_string.split(',')]
+
 if __name__ == '__main__':
 	app.run(debug=True)

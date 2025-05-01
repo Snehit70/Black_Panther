@@ -1,39 +1,38 @@
 {% extends "layout.html" %}
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ project.title|title_case }}{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container my-5">
     <div class="row">
         <!-- Project Details -->
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title h2">{{ project.title }}</h1>
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h1 class="card-title h2 mb-3 fw-bold">{{ project.title|title_case }}</h1>
                     <div class="mb-3">
-                        <span class="badge bg-secondary">{{ project.technologies }}</span>
+                        {% for tech in project.technologies.split(',') %}
+                            <span class="badge bg-primary-soft text-primary me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() }}</span>
+                        {% endfor %}
                     </div>
                     
-                    <div class="card-text mb-4">
+                    <div class="card-text mb-4 text-muted">
                         {{ project.description }}
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-end align-items-center">
                         <small class="text-muted">
                             Created on {{ project.created_at.strftime('%B %d, %Y') }}
                         </small>
-                        {% if session.user_id == project.creator_id %}
-                            <a href="#" class="btn btn-outline-dark btn-sm">Edit Project</a>
-                        {% endif %}
                     </div>
                 </div>
             </div>
             
             <!-- Discussion Section -->
-            <div class="card mt-4">
+            <div class="card border-0 shadow-sm">
                 <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Discussion</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     {% if session.user_id %}
                         <form action="{{ url_for('comment.add_comment', project_id=project.id) }}" method="POST" class="mb-4">
                             <div class="form-group">
@@ -43,12 +42,15 @@
                                           placeholder="Share your thoughts or ask questions..."
                                           required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-dark">Post Comment</button>
+                            <div class="text-end mt-3">
+                                <button type="submit" class="btn btn-dark rounded-pill px-4">Post Comment</button>
+                            </div>
                         </form>
                     {% else %}
-                        <p class="text-center mb-4">
-                            <a href="{{ url_for('auth.login') }}">Login</a> to join the discussion
-                        </p>
+                        <div class="alert alert-light border-0 text-center p-4 mb-4">
+                            <p class="mb-2">Want to join the discussion?</p>
+                            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-dark rounded-pill px-4">Login to Comment</a>
+                        </div>
                     {% endif %}
 
                     <!-- Comments List -->
@@ -57,11 +59,16 @@
                             {% for comment in project.comments|sort(attribute='created_at', reverse=true) %}
                                 <div class="comment mb-3">
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <strong>{{ comment.user.username }}</strong>
-                                            <small class="text-muted ml-2">
-                                                {{ comment.created_at.strftime('%B %d, %Y %H:%M') }}
-                                            </small>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                {{ comment.user.username[0].upper() }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ comment.user.username }}</strong>
+                                                <small class="text-muted d-block">
+                                                    {{ comment.created_at.strftime('%B %d, %Y %H:%M') }}
+                                                </small>
+                                            </div>
                                         </div>
                                         {% if session.user_id == comment.user_id %}
                                             <form action="{{ url_for('comment.delete_comment', project_id=project.id, comment_id=comment.id) }}" 
@@ -73,14 +80,16 @@
                                             </form>
                                         {% endif %}
                                     </div>
-                                    <p class="mb-0 mt-2">{{ comment.content }}</p>
+                                    <p class="mb-0 mt-3 ps-4 ms-2">{{ comment.content }}</p>
                                 </div>
                                 {% if not loop.last %}
-                                    <hr>
+                                    <hr class="my-4">
                                 {% endif %}
                             {% endfor %}
                         {% else %}
-                            <p class="text-center text-muted">No comments yet. Be the first to comment!</p>
+                            <div class="text-center py-4">
+                                <p class="text-muted mb-0">No comments yet. Be the first to comment!</p>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -88,29 +97,37 @@
         </div>
 
         <!-- Sidebar -->
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <!-- Creator Info -->
-            <div class="card mb-4">
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Project Creator</h5>
                 </div>
-                <div class="card-body">
-                    <h6>{{ project.creator.username }}</h6>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            {{ project.creator.username[0].upper() }}
+                        </div>
+                        <h6 class="mb-0">{{ project.creator.username }}</h6>
+                    </div>
                     <p class="text-muted">{{ project.creator.bio[:100] + '...' if project.creator.bio else 'No bio available' }}</p>
-                    <a href="#" class="btn btn-outline-dark btn-sm">View Profile</a>
+                    <a href="#" class="btn btn-outline-dark rounded-pill px-4 w-100">View Profile</a>
                 </div>
             </div>
 
             <!-- Interest Section -->
-            <div class="card">
+            <div class="card border-0 shadow-sm">
                 <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Interest</h5>
                 </div>
-                <div class="card-body">
-                    <p>{{ interest_count }} people interested</p>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <div class="display-4 text-primary me-2">{{ interest_count }}</div>
+                        <div class="text-muted">people interested</div>
+                    </div>
                     {% if session.user_id and session.user_id != project.creator_id %}
                         <form action="{{ url_for('project.toggle_interest', project_id=project.id) }}" method="POST">
-                            <button type="submit" class="btn btn-{{ 'outline-dark' if not is_interested else 'dark' }} w-100">
+                            <button type="submit" class="btn btn-{{ 'outline-dark' if not is_interested else 'dark' }} rounded-pill px-4 w-100">
                                 {{ 'Show Interest' if not is_interested else 'Remove Interest' }}
                             </button>
                         </form>
@@ -120,4 +137,31 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .comment {
+        padding: 1.25rem;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        border-left: 3px solid #03045e;
+    }
+    
+    .bg-primary-soft {
+        background-color: rgba(3, 4, 94, 0.1);
+    }
+    
+    .text-primary {
+        color: #03045e !important;
+    }
+    
+    .avatar {
+        background-color: #03045e;
+    }
+    
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+</style>
 {% endblock %}

@@ -2,20 +2,22 @@
 {% block title %}Create New Project{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <h4 class="mb-0">Create New Project</h4>
-                </div>
-                <div class="card-body">
+        <div class="col-lg-8">
+            <div class="text-center mb-4">
+                <h1 class="h2 fw-bold">Create New Project</h1>
+                <p class="text-muted">Share your idea and find collaborators to bring it to life</p>
+            </div>
+            
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4 p-md-5">
                     <form action="{{ url_for('project.create_project') }}" method="POST">
                         <!-- Project Title -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             <label for="title" class="form-label">Project Title *</label>
                             <input type="text" 
-                                   class="form-control" 
+                                   class="form-control form-control-lg" 
                                    id="title" 
                                    name="title" 
                                    required 
@@ -25,10 +27,10 @@
                         </div>
 
                         <!-- Technologies -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             <label for="technologies" class="form-label">Technologies *</label>
                             <input type="text" 
-                                   class="form-control" 
+                                   class="form-control form-control-lg" 
                                    id="technologies" 
                                    name="technologies" 
                                    required
@@ -37,17 +39,17 @@
                         </div>
 
                         <!-- Project Description -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             <label for="description" class="form-label">Project Description *</label>
                             <textarea class="form-control" 
                                       id="description" 
                                       name="description" 
-                                      rows="6" 
+                                      rows="8" 
                                       required
                                       placeholder="Describe your project, its goals, and what kind of help you're looking for..."></textarea>
                             <div class="form-text">
                                 Include:
-                                <ul class="mb-0">
+                                <ul class="mb-0 mt-2">
                                     <li>What problem does your project solve?</li>
                                     <li>What kind of contributors are you looking for?</li>
                                     <li>What level of experience is required?</li>
@@ -55,24 +57,22 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ url_for('project.list_projects') }}" class="btn btn-outline-dark">Cancel</a>
-                            <button type="submit" class="btn btn-dark">Create Project</button>
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <a href="{{ url_for('project.list_projects') }}" class="btn btn-outline-dark rounded-pill px-4">Cancel</a>
+                            <button type="submit" class="btn btn-dark rounded-pill px-5">Create Project</button>
                         </div>
                     </form>
                 </div>
             </div>
 
             <!-- Tips Card -->
-            <div class="card mt-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">Tips for a Great Project Listing</h5>
-                </div>
-                <div class="card-body">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body p-4">
+                    <h5 class="mb-3 fw-bold">Tips for a Great Project Listing</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Do:</h6>
-                            <ul class="text-success">
+                            <h6 class="text-success fw-bold"><i class="bi bi-check-circle me-2"></i>Do:</h6>
+                            <ul class="text-muted">
                                 <li>Be specific about technologies</li>
                                 <li>Describe the project scope clearly</li>
                                 <li>Mention required experience level</li>
@@ -80,8 +80,8 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h6>Don't:</h6>
-                            <ul class="text-danger">
+                            <h6 class="text-danger fw-bold"><i class="bi bi-x-circle me-2"></i>Don't:</h6>
+                            <ul class="text-muted">
                                 <li>Be too vague about requirements</li>
                                 <li>Forget to mention prerequisites</li>
                                 <li>Skip describing the project goals</li>
@@ -95,21 +95,20 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add client-side validation if needed
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(event) {
-        const title = document.getElementById('title').value.trim();
-        const technologies = document.getElementById('technologies').value.trim();
-        const description = document.getElementById('description').value.trim();
-
-        if (!title || !technologies || !description) {
-            event.preventDefault();
-            alert('Please fill in all required fields');
-        }
-    });
-});
-</script>
+{% block styles %}
+<style>
+    .form-control:focus {
+        border-color: #03045e;
+        box-shadow: 0 0 0 0.25rem rgba(3, 4, 94, 0.25);
+    }
+    
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+    
+    .card {
+        border-radius: 15px !important;
+        overflow: hidden;
+    }
+</style>
 {% endblock %}

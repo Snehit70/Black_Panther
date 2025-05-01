@@ -2,74 +2,161 @@
 {% block title %}Collab-Sphere - Find Projects & Collaborators{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row py-5 px-5">
-        <div class="col-md-8 mx-auto text-center">
-            <h1 class="display-4 mb-4">Welcome to Collab-Sphere</h1>
-            <p class="lead mb-4">Find beginner-friendly open-source projects to contribute to, or share your project ideas and find collaborators!</p>
-            {% if not session.user_id %}
-            <div class="d-flex justify-content-center gap-3">
-                <a href="{{ url_for('auth.register') }}" class="btn btn-dark btn-lg">Sign Up</a>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-dark btn-lg">Login</a>
+<div class="hero-section bg-gradient text-white py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 py-4">
+                <h1 class="display-4 fw-bold mb-3">Welcome to Collab-Sphere</h1>
+                <p class="lead mb-4">Find beginner-friendly open-source projects to contribute to, or share your project ideas and find collaborators!</p>
+                
+                {% if not session.user_id %}
+                <div class="d-flex gap-3 mb-3">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg">Sign Up</a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">Login</a>
+                </div>
+                {% else %}
+                <a href="{{ url_for('project.create_project') }}" class="btn btn-light btn-lg mb-3">Create Project</a>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="row mb-5">
-        <div class="col-md-6 mx-auto">
-            <div class="card">
-                <div class="card-body">
+            <div class="col-lg-6">
+                <div class="search-container p-4 bg-white rounded-4 shadow">
+                    <h4 class="mb-3 text-dark">Find Projects</h4>
                     <form action="{{ url_for('project.search') }}" method="GET" class="d-flex gap-2">
-                        <input type="text" name="query" class="form-control" placeholder="Search projects...">
-                        <button type="submit" class="btn btn-dark">Search</button>
+                        <input type="text" name="query" class="form-control form-control-lg" placeholder="Search projects...">
+                        <button type="submit" class="btn btn-dark btn-lg">Search</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="row mb-5">
-        <div class="col-12">
-            <h2 class="text-center mb-4">Featured Projects</h2>
-            <div class="row">
-                {% if featured_projects %}
-                    {% for project in featured_projects %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ project.title }}</h5>
-                                <p class="card-text">{{ project.description[:150] }}...</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">By {{ project.creator.username }}</small>
-                                    <a href="{{ url_for('project.view_project', project_id=project.id) }}" class="btn btn-sm btn-outline-dark">Learn More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col-12 text-center">
-                        <p>No featured projects yet.</p>
-                        {% if session.user_id %}
-                        <a href="{{ url_for('project.create_project') }}" class="btn btn-dark">Create First Project</a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            </div>
-        </div>
+<div class="container">
+    <div class="featured-header mb-4">
+        <h2 class="border-start border-5 border-primary ps-3">Featured Projects</h2>
     </div>
-
-    <div class="row py-5 bg-light rounded">
-        <div class="col-md-8 mx-auto text-center">
-            <h3>Ready to Collaborate?</h3>
-            <p class="lead">Join our community of developers and bring your ideas to life!</p>
-            {% if session.user_id %}
-            <a href="{{ url_for('project.create_project') }}" class="btn btn-dark">Create a Project</a>
-            {% else %}
-            <a href="{{ url_for('auth.register') }}" class="btn btn-dark">Get Started</a>
-            {% endif %}
-        </div>
+    
+    <div class="row">
+        {% if featured_projects %}
+            {% for project in featured_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card project-card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <h3 class="h5 card-title mb-3">{{ project.title|title_case }}</h3>
+                        <div class="mb-3">
+                            {% for tech in project.technologies.split(',') %}
+                                <span class="badge bg-primary-soft text-primary me-1 mb-1 py-2 px-3 rounded-pill">{{ tech.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        <p class="card-text text-muted">{{ project.description[:140] }}...</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                {{ project.creator.username[0].upper() }}
+                            </div>
+                            <span class="small text-muted">{{ project.creator.username }}</span>
+                        </div>
+                        <a href="{{ url_for('project.view_project', project_id=project.id) }}" class="btn btn-sm btn-outline-dark rounded-pill px-3">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <div class="empty-state-icon mb-4">
+                        <i class="bi bi-laptop text-muted" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3>No projects yet</h3>
+                    <p class="text-muted mb-4">Be the first to create an amazing project!</p>
+                    {% if session.user_id %}
+                    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary">Create First Project</a>
+                    {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Sign Up to Create</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="cta-section bg-light p-5 rounded-4 text-center my-5">
+        <h3>Ready to Collaborate?</h3>
+        <p class="lead mb-4">Join our community of developers and bring your ideas to life!</p>
+        {% if session.user_id %}
+        <a href="{{ url_for('project.create_project') }}" class="btn btn-dark btn-lg px-4 py-2">Create a Project</a>
+        {% else %}
+        <a href="{{ url_for('auth.register') }}" class="btn btn-dark btn-lg px-4 py-2">Get Started</a>
+        {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #03045e 0%, #0077b6 100%);
+    }
+    
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .search-container {
+        transform: translateY(20px);
+    }
+    
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .bg-primary-soft {
+        background-color: rgba(3, 4, 94, 0.1);
+    }
+    
+    .text-primary {
+        color: #03045e !important;
+    }
+    
+    .project-card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .empty-state {
+        padding: 3rem;
+    }
+    
+    .featured-header h2 {
+        border-color: #03045e !important;
+    }
+    
+    .avatar {
+        background-color: #03045e;
+    }
+    
+    .border-primary {
+        border-color: #03045e !important;
+    }
+    
+    .btn-primary {
+        background-color: #03045e;
+        border-color: #03045e;
+    }
+    
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+    
+    .rounded-4 {
+        border-radius: 0.75rem !important;
+    }
+</style>
 {% endblock %}
