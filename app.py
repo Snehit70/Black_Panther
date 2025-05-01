@@ -13,16 +13,16 @@ os.makedirs(app.instance_path, exist_ok=True)
 db.init_app(app)
 bootstrap.init_app(app)
 
-# Initialize database tables
-with app.app_context():
-    db.create_all()
-
-# Import models - AFTER db initialization
+# Import models - BEFORE db initialization
 from models.user import User
 from models.project import Project
 from models.comment import Comment
 from models.interest import interest
 from services.project_service import ProjectService
+
+# Initialize database tables - AFTER importing models
+with app.app_context():
+    db.create_all()
 
 # Import and register blueprints
 from routes.auth import auth_bp

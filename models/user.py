@@ -1,6 +1,5 @@
 from datetime import datetime,timezone
 from extensions import db
-from models.interest import interest
 
 class User(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -13,7 +12,7 @@ class User(db.Model):
     updated_at=db.Column(db.DateTime,default=lambda:datetime.now(timezone.utc), onupdate=lambda:datetime.now(timezone.utc))
 
     interested_projects = db.relationship('Project',
-                                        secondary=interest,
+                                        secondary='interest',
                                         backref=db.backref('interested_users', lazy='dynamic'))
     
     comments = db.relationship('Comment', backref='user', lazy='dynamic')

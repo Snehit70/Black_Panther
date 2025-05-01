@@ -15,6 +15,12 @@ instance/
 *.sqlite
 *.sqlite3
 
+# Database backup files
+*.db.backup
+*.db.old
+*.db-journal
+*.bak
+
 # Environment and local settings
 .env
 .venv
@@ -49,3 +55,13 @@ coverage.xml
 
 # Documentation
 docs/_build/
+
+# Backup and temporary files
+*~
+*.backup
+*.bak
+*.tmp
+*.temp
+.*.swp
+*.py.backup
+app.py.backup
